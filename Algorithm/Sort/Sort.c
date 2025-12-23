@@ -5,7 +5,6 @@
 void bubble();
 void shaker();
 void selection();
-void heap();
 void insertion();
 void shell();
 void show();
@@ -126,4 +125,5 @@ void getRandomNum(){  //洗牌法，先把數字放進陣列，接著透過隨�
         arr[i] = arr[r];
         arr[r] = tmp;
     }
+
 }
