@@ -8,13 +8,13 @@ typedef struct ListNode{
 ListNode* createNode(int v);
 void push_back(ListNode **head, int v);
 void push_front(ListNode **head, int v);
-void show(ListNode *head);
+void show(ListNode **head);
 void insertNth(ListNode **head, int pos, int v);
 void reverse(ListNode **head);
 void deleteNode(ListNode **head, int v);
 ListNode* search(ListNode **head, int v);
 int modify(ListNode *node, int v);
-void freeList(ListNode *head);
+void freeList(ListNode **head);
 ListNode* deleteDupilicate(ListNode *head);
 void sort(ListNode *head);
 bool hasCycle(ListNode *head);
@@ -54,8 +54,8 @@ void push_front(ListNode **head, int v){
     *head = newNode;
 }
 
-void show(ListNode *head){
-    ListNode *current = head;
+void show(ListNode **head){
+    ListNode *current = *head;
     if(!current) return;
     while(current != NULL){
         printf("%d ", current->data);
@@ -126,11 +126,11 @@ void deleteNode(ListNode **head, int v){
     }
 }
 
-void sort(ListNode *head) {
-    if (head == NULL || head->next == NULL) return;
+void sort(ListNode **head) {
+    if (*head == NULL) return;
 
     int tmp;
-    for (ListNode *i = head; i != NULL; i = i->next) {
+    for (ListNode *i = *head; i != NULL; i = i->next) {
         for (ListNode *j = i->next; j != NULL; j = j->next) {
             if (i->data > j->data) {
                 tmp = i->data;
@@ -154,8 +154,8 @@ void reverse(ListNode **head){
     *head = prev;
 }
 
-void freeList(ListNode *head){
-    ListNode *current = head;
+void freeList(ListNode **head){
+    ListNode *current = *head;
     ListNode *next = NULL;
 
     while(current != NULL){
