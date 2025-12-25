@@ -82,18 +82,18 @@ bool modify(ListNode *node, int v){
     return true;
 }
 
-void insertNode(ListNode **head, int v, int pos) {
+void insertNth(ListNode **head, int v, int pos) {
     ListNode* newNode = createNode(v);
-    if (!newNode || !head) return;
+    if(!newNode) return;
 
-    if (pos <= 0 || *head == NULL) {
+    if(pos <= 0 || *head == NULL){
         newNode->next = *head;
         *head = newNode;
         return;
     }
 
     ListNode *current = *head;
-    for (int i = 0; i < pos - 1 && current->next != NULL; i++) {
+    for(int i = 0; i < pos - 1 && current->next != NULL; i++) {
         current = current->next;
     }
 
@@ -233,5 +233,6 @@ void freeList(ListNode *head){
         current = next;
     }
 }
+
 
 
