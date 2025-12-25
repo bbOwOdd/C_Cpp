@@ -16,6 +16,7 @@ ListNode* search(ListNode *head, int v);
 int modify(ListNode *node, int v);
 void freeList(ListNode *head);
 ListNode* deleteDupilicate(ListNode *head);
+void sort(ListNode *head);
 bool hasCycle(ListNode *head);
 ListNode *mergeTwoListsList(Node *list1, ListNode *list2);
 ListNode *copyList(ListNode *head);
@@ -122,6 +123,21 @@ void deleteNode(ListNode **head, int v){
         }else{
             prev = current;
             current = current->next;
+        }
+    }
+}
+
+void sort(ListNode *head) {
+    if (head == NULL || head->next == NULL) return;
+
+    int tmp;
+    for (ListNode *i = head; i != NULL; i = i->next) {
+        for (ListNode *j = i->next; j != NULL; j = j->next) {
+            if (i->data > j->data) {
+                tmp = i->data;
+                i->data = j->data;
+                j->data = tmp;
+            }
         }
     }
 }
@@ -233,3 +249,4 @@ ListNode *copyList(ListNode *head){
 
     return newList;
 }
+
