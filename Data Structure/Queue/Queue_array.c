@@ -1,53 +1,62 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdbool.h>
 
-#define MAX_LENGTH 5
-#define EMPTY (-1)
+typedef struct queue{
+    int front;
+    int back;
+    int capacity;
+    int *data;
+} Queue;
 
-int queue[MAX_LENGTH];
-int head = -1;
-int rear = -1;
+Queue* newQueue(int size){
+    Queue* q = (Queue*)malloc(sizeof(Queue));
+    q->capacity = size + 1; //多一格空間區分空與滿
+    q->data = (int*)malloc(q->capacity * sizeof(int));
+    q->front = 0;
+    q->back = 0;
+    return q;
+}
 
-void enqueue(int value);
-void dequeue();
-void show();
+bool isEmpty(Queue* q);
+bool isFull(Queue* q);
+void enqueue(Queue* q, int num);
+int dequeue(Queue* q);
+void freeQueue(Queue* q);
 
 int main(){
-
-    for(int i = 0; i < 5; i++){
-        enqueue(i);
-    }
-    show();
-
-    dequeue();
-    show();
-
+    Queue *q = newQueue(5);
     return 0;
 }
 
-void enqueue(int value){
-    if(rear >= MAX_LENGTH-1) printf("overflow");
-    rear++;
-    queue[rear] = value;
+bool isEmpty(Queue* q){
+    return (q->front == q->back);
 }
 
-void dequeue(){
-    if(rear == EMPTY) printf("it's empty");
-    int result = queue[head + 1];
-
-    //shift all of the element forword
-    for (int i = 1; i <= rear;i++){
-        queue[i - 1] = queue[i];
-    }
-    queue[rear] = 0;
-    rear--;
+bool isFull(Queue* q){
+    return ((q->back + 1) % q->capacity == q->front);
 }
 
-void show(){
-    int size = sizeof(queue) / sizeof(queue[0]);
-    printf("The queue: ");
-    for(int i = 0; i < size; i++){
-        printf("%d ", queue[i]);
+void enqueue(Queue* q, int num){
+    if(isFull(q)){
+        printf("The queue is full.\n");
+        return;
     }
-    printf("\n");
+    q->data[q->back] = num;
+    q->back = (q->back + 1) % q->capacity;
+}
+
+int dequeue(Queue* q){
+    if(isEmpty(q)){
+        printf("The queue is empty.\n");
+        return -1;
+    }
+    int value = q->data[q->front];
+    q->front = (q->front + 1) % q->capacity;
+    return value;
+}
+
+void freeQueue(Queue* q){
+    free(q->data);
+    free(q);
 }
