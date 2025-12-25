@@ -17,7 +17,8 @@ int modify(ListNode *node, int v);
 void freeList(ListNode *head);
 ListNode* deleteDupilicate(ListNode *head);
 bool hasCycle(ListNode *head);
-ListNode *mergeTwoListsList(Node *List1, ListNode *List2);
+ListNode *mergeTwoListsList(Node *list1, ListNode *list2);
+ListNode *copyList(ListNode *head);
 
 int main(){
 
@@ -232,3 +233,4 @@ void freeList(ListNode *head){
         current = next;
     }
 }
+
