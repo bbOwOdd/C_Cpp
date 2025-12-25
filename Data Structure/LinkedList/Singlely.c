@@ -11,8 +11,8 @@ void push_front(ListNode **head, int v);
 void show(ListNode *head);
 void insertNth(ListNode **head, int pos, int v);
 void reverse(ListNode **head);
-void delete(ListNode **head, int v);
-ListNode* search(ListNode *head, int v);
+void deleteNode(ListNode **head, int v);
+ListNode* search(ListNode **head, int v);
 int modify(ListNode *node, int v);
 void freeList(ListNode *head);
 ListNode* deleteDupilicate(ListNode *head);
@@ -22,7 +22,6 @@ ListNode *mergeTwoListsList(Node *list1, ListNode *list2);
 ListNode *copyList(ListNode *head);
 
 int main(){
-
     ListNode *list = NULL;
     return 0;
 }
@@ -68,8 +67,8 @@ void show(ListNode *head){
     // show(head->next);
 }
 
-ListNode* search(ListNode *head, int v){
-    ListNode *current = head;
+ListNode* search(ListNode **head, int v){
+    ListNode *current = *head;
     while(current != NULL){
         if(current->data == v) return current;
         current = current->next;
@@ -143,10 +142,9 @@ void sort(ListNode *head) {
 }
 
 void reverse(ListNode **head){
-    ListNode *prev, *next, *current;
-    current = *head;
-    prev = NULL;
-
+    ListNode *prev = NULL, *next = NULL;
+    ListNode *current = *head;
+    
     while(current != NULL){
         next = current->next;
         current->next = prev;
@@ -249,4 +247,3 @@ ListNode *copyList(ListNode *head){
 
     return newList;
 }
-
