@@ -140,6 +140,17 @@ void reverse(ListNode **head){
     *head = prev;
 }
 
+void freeList(ListNode *head){
+    ListNode *current = head;
+    ListNode *next = NULL;
+
+    while(current != NULL){
+        next = current->next;
+        free(current);
+        current = next;
+    }
+}
+
 ListNode* deleteDupilicate(ListNode *head){ //already sorted
     ListNode *current = head;
     while(current != NULL && current->next != NULL){
@@ -222,17 +233,3 @@ ListNode *copyList(ListNode *head){
 
     return newList;
 }
-
-void freeList(ListNode *head){
-    ListNode *current = head;
-    ListNode *next = NULL;
-
-    while(current != NULL){
-        next = current->next;
-        free(current);
-        current = next;
-    }
-}
-
-
-
