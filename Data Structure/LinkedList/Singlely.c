@@ -18,8 +18,8 @@ void freeList(ListNode **head);
 ListNode* deleteDupilicate(ListNode *head);
 void sort(ListNode *head);
 bool hasCycle(ListNode *head);
-ListNode *mergeTwoListsList(Node *list1, ListNode *list2);
-ListNode *copyList(ListNode *head);
+ListNode *mergeTwoLists(Node *list1, ListNode *list2);
+ListNode *copyList(ListNode **head);
 
 int main(){
     ListNode *list = NULL;
@@ -226,11 +226,11 @@ void deleteEvenNode(ListNode **head){
     }
 }
 
-ListNode *copyList(ListNode *head){
+ListNode *copyList(ListNode **head){
     if(head == NULL) return NULL;
 
     ListNode *tmp;
-    ListNode *current = head;
+    ListNode *current = *head;
     ListNode *newList = (ListNode*)malloc(sizeof(ListNode));
     newList->next = NULL;
     newList->data = current->data;
