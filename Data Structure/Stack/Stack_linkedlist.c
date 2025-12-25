@@ -1,63 +1,65 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
-typedef struct Node
-{
+typedef struct ListNode{
     int data;
-    struct Node *next;
-}Node;
-Node *head;
+    struct ListNode *next;
+} ListNode;
 
-void push(int v);
-void pop();
-void show();
-void peek();
+typedef struct Stack{
+    ListNode* top;
+} Stack;
+
+Stack* newStack(){
+    Stack* st = (Stack*)malloc(sizeof(Stack));
+    st->top = NULL;
+    return st;
+}
+
+bool isEmpty(Stack* st);
+int stackTop(Stack* st);
+void push(Stack* st, int num);
+int pop(Stack* st);
+void freeStack(Stack* st);
 
 int main(){
-    
-    for(int i = 0; i < 10; i++){
-        push(i);
-    }
-    pop();
-    show();
-    peek();
-
+    Stack *st = newStack();
     return 0;
 }
 
-void push(int v){
-    Node *current = (Node*)malloc(sizeof(Node));
+bool isEmpty(Stack* st){
+    return (st->top == NULL);
+}
 
-    if(head == NULL){
-        current->data = v;
-        current->next = NULL;
-        head = current;
-    }else{
-        current->data = v;
-        current->next = head;
-        head = current;
+int stackTop()(Stack* st){
+    if(isEmpty(st)){
+        printf("The stack is empty.\n");
+        return -1;
     }
+    return st->top->data;
 }
 
-void pop(){
-    Node *current;
-    current = head;
-    head = head->next;
-    free(current);
+void push(Stack* st, int num){
+    ListNode* newNode = (ListNode*)malloc(sizeof(ListNode));
+    newNode->data = num;
+    newNode->next = st->top;
+    st->top = newNode;
 }
 
-void show(){
-    Node *current = head;
-    printf("The stack\n");
-    while(current != NULL){
-        printf("%d\n", current->data);
-        current = current->next;
+int pop(Stack* st){
+    if(isEmpty(st)){
+        printf("The stack is empty.\n");
+        return -1;
     }
-    printf("\n");
+    ListNode* deleteNode = st->top;
+    int x = deleteNode->data;
+    st->top = st->top->next;
+    free(deleteNode);
+    return x;
 }
 
-void peek(){
-    Node *top = head;
-    if(top != NULL) printf("The peek: %d\n", top->data);
-    else printf("The stack is empty");
+void freeStack(Stack* st){
+    while(!isEmpty(st)) pop(st);
+    free(st);
 }
