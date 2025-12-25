@@ -1,194 +1,234 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include <stdbool.h>
 
-typedef struct Node
-{
+typedef struct ListNode{
     int data;
-    struct Node *next;
-}Node;
-Node *head;
+    struct ListNode *next;
+}ListNode;
 
-Node *createNode(int v);
-void insertAtHead(int v);
-void insertAtTail(int v);
-void insertNth(Node *node, int v);
-Node *search(int v);
-void modify(Node *node, int v);
-void delete(int v);
-void sort();
-void reverse();
-void show();
-void showRecursion(Node *node);
+ListNode* createNode(int v);
+void push_back(ListNode **head, int v);
+void push_front(ListNode **head, int v);
+void show(ListNode *head);
+void insertNth(ListNode **head, int pos, int v);
+void reverse(ListNode **head);
+void delete(ListNode **head, int v);
+ListNode* search(ListNode *head, int v);
+int modify(ListNode *node, int v);
+void freeList(ListNode *head);
+ListNode* deleteDupilicate(ListNode *head);
+bool hasCycle(ListNode *head);
+ListNode *mergeTwoListsList(Node *List1, ListNode *List2);
 
 int main(){
 
-    Node *tmp;
-    int val;
-    
-    // printf("Enter the numbers; -1 to quit\n");
-    // do{  
-    //     scanf("%d", &val);
-    //     if(val == -1) break;
-    //     insert(val);   
-    // }while(val != -1);
-    for(int i = 0; i < 10; i++){
-        //tmp = createNode(i);
-        insertAtHead(i); 
-    }
-    show();
-    //showRecursion(head);
-    
-    if (search(5) != NULL){
-        Node *node = search(5);
-        modify(node, 11);
-    }
-    show();
-    //showRecursion(head);
-
-    
-    delete(11);
-    show();
-    //showRecursion(head);
-
-    insertNth(search(6), 55);
-    show();
-    //showRecursion(head);
-
-    sort();
-    show();
-    //showRecursion(head);
-
-    reverse();
-    printf("The list: null-");
-    Node *current = head;
-    while(current != NULL){
-        printf("%d-", current->data);
-        current = current->next;
-    }
-    printf("head\n");
-    //showRecursion(head);
-
-    insertAtTail(13);
-    show();
-
+    ListNode *list = NULL;
     return 0;
 }
 
-Node *createNode(int v){  //創造無數個節點，next都指向null
-    Node *current = (Node*)malloc(sizeof(Node));
-    current->data = v;
-    current->next = NULL;
-    return current;
+ListNode* createNode(int v){
+    ListNode *newNode = (ListNode*)malloc(sizeof(ListNode));
+    if(!newNode) return NULL;
+    newNode->data = v;
+    newNode->next = NULL;
+    return newNode;
 }
 
-void insertAtHead(int v){  //把current node link到head，head link到current node，插入的node link head
-    Node *current = (Node*)malloc(sizeof(Node));
-    if (head == NULL) {
-        current->data = v;
-        current->next = NULL;
-        head = current;
-    }else{
-        current->data = v;
-        current->next = head->next;
-        head->next = current;
+void push_back(ListNode **head, int v){
+    ListNode *newNode = createNode(v);
+    if(!newNode) return;
+    if(*head == NULL){
+        *head = newNode;
+        return;
     }
+
+    ListNode *current = *head;
+    while(current->next != NULL) current = current->next;
+    current->next = newNode;
 }
 
-void insertAtTail(int v){
-    Node *current = (Node*)malloc(sizeof(Node));
-    Node *tmp;
-    if(head == NULL) insertAtHead(v);
-    else{
-        tmp = head;
-        while(tmp->next != NULL){
-            tmp = tmp->next;
-        }
-        current->data = v;
-        tmp->next = current;
-        current->next = NULL;
-    }
+void push_front(ListNode **head, int v){
+    ListNode *newNode = createNode(v);
+    if(!newNode) return;
+    newNode->next = *head;
+    *head = newNode;
 }
 
-void show(){
-    Node *current = head;
-    printf("The list: head-");
+void show(ListNode *head){
+    ListNode *current = head;
+    if(!current) return;
     while(current != NULL){
-        printf("%d-", current->data);
+        printf("%d ", current->data);
         current = current->next;
     }
-    printf("null\n");
+
+    // if(!head) return;
+    // printf("%d ", head->data);
+    // show(head->next);
 }
 
-void showRecursion(Node *node){
-    if(node == NULL) return;
-    printf("%d ", node->data);
-    showRecursion(node->next);
-}
-
-void insertNth(Node *node, int v){  //先創建欲插入node，將current node link到欲被插入的node後，和被插入的node link的節點
-    //Node *current = createNode(v);
-    Node *current = (Node*)malloc(sizeof(Node));
-    current->data = v; 
-    current->next = node->next;  //current node連結後一個node
-    node->next = current;   //前一個node連結current node
-}
-
-Node *search(int v){
-    Node *current = head;
-    while(current->next != NULL){
-        if(current->data == v){
-            //printf("Found %d at position [%d]\n", tmp->data, count);
-            return current;
-        }
+ListNode* search(ListNode *head, int v){
+    ListNode *current = head;
+    while(current != NULL){
+        if(current->data == v) return current;
         current = current->next;
     }
-    //printf("Not found %d in the linkedlist\n", v);
     return NULL;
 }
 
-void modify(Node *node, int v){
-    // Node *current = head;
-    // while(current->next != NULL){
-    //     if(current->data == v1){
-    //         current->data = v2;
-    //     }
-    //     current = current->next;
-    // }
+bool modify(ListNode *node, int v){
+    if(!node) return false;
     node->data = v;
+    return true;
 }
 
-void delete(int v){
-    Node *current = head;
-    while(current->next != NULL){
-        if(current->next->data == v){
-            current->next = current->next->next;
-        }
+void insertNode(ListNode **head, int v, int pos) {
+    ListNode* newNode = createNode(v);
+    if (!newNode || !head) return;
+
+    if (pos <= 0 || *head == NULL) {
+        newNode->next = *head;
+        *head = newNode;
+        return;
+    }
+
+    ListNode *current = *head;
+    for (int i = 0; i < pos - 1 && current->next != NULL; i++) {
         current = current->next;
     }
+
+    newNode->next = current->next;
+    current->next = newNode;
 }
 
-void sort(){
-    int tmp;
-    for(Node *i = head; i->next != NULL; i = i->next){
-        for(Node *j = head; j->next != NULL; j = j->next){
-            if(i->data > j->data){
-                tmp = i->data;
-                i->data = j->data;
-                j->data = tmp;
+void deleteNode(ListNode **head, int v){
+    ListNode *prev = NULL, *next = NULL, *tmp = NULL;
+    ListNode *current = *head;
+    if(!current) return;
+
+    while (current != NULL) {
+        if(current->data == v){
+            tmp = current;
+            if(prev == NULL){
+                current = current->next;
+                *head = current;
+            }else{
+                next = current->next;
+                prev->next = next;
+                current = next;
             }
+            free(tmp);
+            tmp = NULL;
+        }else{
+            prev = current;
+            current = current->next;
         }
     }
 }
 
-void reverse(){
-    Node *current, *prev, *next;
-    current = head;
+void reverse(ListNode **head){
+    ListNode *prev, *next, *current;
+    current = *head;
     prev = NULL;
+
     while(current != NULL){
         next = current->next;
         current->next = prev;
         prev = current;
         current = next;
     }
-    head = prev;
+    *head = prev;
+}
+
+ListNode* deleteDupilicate(ListNode *head){ //already sorted
+    ListNode *current = head;
+    while(current != NULL && current->next != NULL){
+        if(current->data == current->next->data) current->next = current->next->next;
+        else current = current->next;
+    }
+
+    return head;
+}
+
+bool hasCycle(ListNode *head){
+    ListNode *slow = head;
+    ListNode *fast = head;
+
+    while(fast != NULL && fast->next != NULL){
+        slow = slow->next;
+        fast = fast->next->next;
+        if(slow == fast) return true;
+    }
+
+    return false;
+}
+
+ListNode *mergeTwoLists(ListNode *list1, ListNode *list2){  //already sorted
+    if(list1 == NULL) return list2;
+    if(list2 == NULL) return list1;
+
+    if(list1->data <= list2->data){
+        list1->next = mergeTwoLists(list1->next, list2);
+        return list1;
+    }else{
+        list2->next = mergeTwoLists(list1, list2->next);
+        return list2;
+    }
+}
+
+void deleteEvenNode(ListNode **head){
+    ListNode *prev = NULL, *next = NULL, *tmp = NULL;
+    ListNode *current = head;
+    if(!current) return;
+
+    while(current != NULL){
+        if(!(current->data & 1)){   //even node
+            tmp = current;
+            if(prev == NULL){
+                current = current->next;
+                *head = current;
+            }else{
+                next = current->next;
+                prev->next = next;
+                current = next;
+            }
+            free(tmp);
+            tmp = NULL;
+        }else{
+            prev = current;
+            current = current->next;
+        }
+    }
+}
+
+ListNode *copyList(ListNode *head){
+    if(head == NULL) return NULL;
+
+    ListNode *tmp;
+    ListNode *current = head;
+    ListNode *newList = (ListNode*)malloc(sizeof(ListNode));
+    newList->next = NULL;
+    newList->data = current->data;
+    tmp = newList;
+    current = current->next;
+
+    while(current != NULL){
+        tmp->next = (ListNode*)malloc(sizeof(ListNode));
+        tmp = tmp->next;
+        tmp->data = current->data;
+        tmp->next = NULL;
+        current = current->next;
+    }
+
+    return newList;
+}
+
+void freeList(ListNode *head){
+    ListNode *current = head;
+    ListNode *next = NULL;
+
+    while(current != NULL){
+        next = current->next;
+        free(current);
+        current = next;
+    }
 }
