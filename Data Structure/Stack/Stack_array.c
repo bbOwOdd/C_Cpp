@@ -1,57 +1,63 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdbool.h>
 
-#define MAX_LENGTH 5
-#define EMPTY (-1)
-#define INT_MIN (-2147483648)
-#define STACK_EMPTY INT_MIN
+typedef struct Stack{
+    int top;
+    int capacity;
+    int *data;
+} Stack;
 
-int stack[MAX_LENGTH];
-int top = EMPTY;
+Stack* newStack(int size){
+    Stack* st = (Stack*)malloc(sizeof(Stack));
+    st->data = (int*)malloc(size * sizeof(int));
+    st->top = -1;
+    st->capacity = size - 1;
+    return st;
+}
 
-bool push(int val);
-void pop();
-void peek();
-void show();
+bool isEmpty(Stack* st);
+int stackTop(Stack* st);
+bool isFull(Stack *st);
+void push(Stack* st, int num);
+int pop(Stack* st);
+void freeStack(Stack* st);
 
 int main(){
-
-    int num;
-    for(int i = 1; i < 6; i++){
-        push(i);
-    }
-    show();
-    peek();
-
-    pop();
-    
-    show();
-    peek();
+    Stack* st = new_stack(5);
     return 0;
 }
 
-bool push(int val){
-    if (top >= MAX_LENGTH - 1) return false;  //isFull()
-    top++;
-    stack[top] = val;
-    return true;
+bool isEmpty(Stack *st){
+    return (st->top == -1);
 }
 
-void pop(){
-    if (top == EMPTY) printf("it's empty");  //isEmpty()
-    stack[top] = 0;
-    top--;
-}
-
-void peek(){
-    printf("The peek: %d\n", stack[top]);
-}
-
-void show(){
-    int size = sizeof(stack) / sizeof(stack[0]);
-    printf("The stack: \n");
-    for(int i = top; i >= 0; i--){
-        printf("%d\n", stack[i]);
+int stackTop(Stack *st){
+    if(isEmpty(st)){
+        printf("The stack is empty.\n");
+        return -1;
     }
-    printf("\n");
+    return st->data[st->top];
+}
+
+bool isFull(Stack *st){
+    return (st->top == st->capacity);
+}
+
+void push(Stack *st, int num){
+    if(isFull(st)) printf("The stack is full.\n");
+    else st->data[++st->top] = num;
+}
+
+int pop(Stack *st){
+    if(isEmpty(st)){
+        printf("The stack is empty.\n");
+        return -1;
+    }
+    return st->data[st->top--];
+}
+
+void freeStack(Stack *st){
+    free(st->data);
+    free(st);
 }
