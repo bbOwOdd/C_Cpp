@@ -1,57 +1,69 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
-typedef struct Node
-{
+typedef struct ListNode{
     int data;
-    struct Node *next;
-}Node;
-Node *front;
-Node *rear;
+    struct ListNode *next;
+} ListNode;
 
-void insert(int v);
-void delete();
-void show();
+typedef struct Queue{
+    ListNode* front;
+    ListNode* back;
+} Queue;
+
+Queue* newQueue(){
+    Queue* q = (Queue*)malloc(sizeof(Queue));
+    q->front = NULL;
+    q->back = NULL;
+    return q;
+}
+
+bool isEmpty(Queue *q);
+void enqueue(Queue *q, int num);
+int dequeue(Queue *q);
+void freeQueue(Queue* q);
 
 int main(){
-
-    for(int i = 0; i < 10; i++){
-        insert(i);
-    }
-    show();
-
-    delete();
-    show();
+    Queue *q = newQueue();
+    return 0;
 }
 
-void insert(int v){
-    Node *current = (Node*)malloc(sizeof(Node));
-    current->data = v;
-    if(front == NULL){
-        front = current;  
-        rear = current;   
-        front->next = NULL;  
-        rear->next = NULL;  
-    }else{
-        rear->next = current;  
-        rear = current;  
-        rear->next = NULL; 
+bool isEmpty(Queue *q){
+    return (q->front == NULL);
+}
+
+void enqueue(Queue *q, int num){
+    ListNode* newNode = (ListNode*)malloc(sizeof(ListNode));
+    newNode->data = num;
+    newNode->next = NULL;
+
+    if(!isEmpty(q)){
+        q->back->next = newNode;
+        q->back = newNode;
+    } else {
+        q->front = q->back = newNode;
     }
 }
 
-void delete(){
-    Node *current;
-    current = front;  
-    front = front->next;  
-    free(current); 
+int dequeue(Queue *q){
+    if(isEmpty(q)){
+        printf("The queue is empty.\n");
+        return -1;
+    }
+
+    ListNode* deleteNode = q->front;
+    int n = deleteNode->data;
+    q->front = q->front->next;
+
+    // 如果隊列變空，更新 back 指標
+    if(q->front == NULL) q->back = NULL;
+
+    free(deleteNode);
+    return n;
 }
 
-void show(){
-    Node *current = front;
-    printf("front ");
-    while(current != NULL){
-        printf("%d ", current->data);
-        current = current->next;
-    }
-    printf("rear\n");
+void freeQueue(Queue* q){
+    while(!isEmpty(q)) dequeue(q);
+    free(q);
 }
