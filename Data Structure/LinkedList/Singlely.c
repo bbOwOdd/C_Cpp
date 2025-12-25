@@ -43,7 +43,7 @@ void push_back(ListNode **head, int v){
     }
 
     ListNode *current = *head;
-    while(current->next != NULL) current = current->next;
+    while(current != NULL) current = current->next;
     current->next = newNode;
 }
 
@@ -233,4 +233,5 @@ void freeList(ListNode *head){
         current = next;
     }
 }
+
 
