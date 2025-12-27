@@ -15,10 +15,10 @@ void deleteNode(ListNode **head, int v);
 ListNode* search(ListNode **head, int v);
 int modify(ListNode *node, int v);
 void freeList(ListNode **head);
-ListNode* deleteDupilicate(ListNode *head);
-void sort(ListNode *head);
+ListNode* deleteDupliicate(ListNode *head);
+void sort(ListNode **head);
 bool hasCycle(ListNode *head);
-ListNode *mergeTwoLists(Node *list1, ListNode *list2);
+ListNode *mergeTwoLists(ListNode *list1, ListNode *list2);
 ListNode *copyList(ListNode **head);
 
 int main(){
@@ -43,7 +43,7 @@ void push_back(ListNode **head, int v){
     }
 
     ListNode *current = *head;
-    while(current != NULL) current = current->next;
+    while(current->next != NULL) current = current->next;
     current->next = newNode;
 }
 
@@ -82,7 +82,7 @@ bool modify(ListNode *node, int v){
     return true;
 }
 
-void insertNth(ListNode **head, int v, int pos) {
+void insertNth(ListNode **head, int pos, int v) {
     ListNode* newNode = createNode(v);
     if(!newNode) return;
 
@@ -127,7 +127,7 @@ void deleteNode(ListNode **head, int v){
 }
 
 void sort(ListNode **head) {
-    if (*head == NULL) return;
+    if (*head == NULL || (*head)->next == NULL) return;
 
     int tmp;
     for (ListNode *i = *head; i != NULL; i = i->next) {
@@ -165,7 +165,7 @@ void freeList(ListNode **head){
     }
 }
 
-ListNode* deleteDupilicate(ListNode *head){ //already sorted
+ListNode* deleteDupliicate(ListNode *head){ //already sorted
     ListNode *current = head;
     while(current != NULL && current->next != NULL){
         if(current->data == current->next->data) current->next = current->next->next;
@@ -203,7 +203,7 @@ ListNode *mergeTwoLists(ListNode *list1, ListNode *list2){  //already sorted
 
 void deleteEvenNode(ListNode **head){
     ListNode *prev = NULL, *next = NULL, *tmp = NULL;
-    ListNode *current = head;
+    ListNode *current = *head;
     if(!current) return;
 
     while(current != NULL){
@@ -227,11 +227,12 @@ void deleteEvenNode(ListNode **head){
 }
 
 ListNode *copyList(ListNode **head){
-    if(head == NULL) return NULL;
+    if(*head == NULL) return NULL;
 
     ListNode *tmp;
     ListNode *current = *head;
     ListNode *newList = (ListNode*)malloc(sizeof(ListNode));
+    if(!newList) return NULL;   
     newList->next = NULL;
     newList->data = current->data;
     tmp = newList;
