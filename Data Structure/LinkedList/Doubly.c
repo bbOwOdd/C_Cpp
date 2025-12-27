@@ -1,134 +1,127 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include <stdbool.h>
 
-typedef struct Node{
+typedef struct ListNode{
     int data;
-    struct Node *next;
-    struct Node *prev;
-}Node;
-Node *head;
+    struct ListNode *next;
+    struct ListNode *prev;
+}ListNode;
 
-void insertAtHead(int v);
-void insertNth(Node *node, int v);
-Node *search(int v);
-void modify(Node *node, int v);
-void delete(int v);
-void sort();
-void reverse();
-void insertAtTail(int v);
-void show();
+ListNode *createNode(int v);
+void push_back(ListNode **head, int v);
+void push_front(ListNode **head, int v);
+void insertNth(ListNode **head, int pos, int v);
+ListNode *search(ListNode **head, int v);
+void modify(ListNode *head, int v);
+void deleteNode(ListNode **head, int v);
+void sort(ListNode **head);
+void reverse(ListNode **head);
+void show(ListNode **head);
 
 int main(){
-
-    for(int i = 0; i < 10; i++){
-        insertAtHead(i);
-    }
-    show();
-
-    if (search(5) != NULL){
-        Node *node = search(5);
-        modify(node, 11);
-    }
-    show();
-
-    delete(11);
-    show();
-
-    insertNth(search(6), 55);
-    show();
-
-    sort();
-    show();
-
-    reverse();
-    printf("The list: tail=");
-    Node *current = head;
-    while(current != NULL){
-        printf("%d=", current->data);
-        current = current->next;
-    }
-    printf("head\n");
-
-    insertAtTail(13);
-    show();
-
+    ListNode *list = NULL;
     return 0;
 }
 
-void insertAtHead(int v){
-    Node *current = (Node*)malloc(sizeof(Node));
-    if(head == NULL){
-        current->next = NULL;
-        current->prev = NULL;
-        current->data = v;
-        head = current;
-    }else{
-        current->data = v;
-        current->prev = NULL;
-        current->next = head;
-        head->prev = current;
-        head = current;
-    }
-};
+ListNode *createNode(int v){
+    ListNode *newNode = (ListNode*)malloc(sizeof(ListNode));
+    if(!newNode) return NULL;
+    newNode->data = v;
+    newNode->next = NULL;
+    newNode->prev = NULL;
 
-void insertAtTail(int v){
-    Node *current = (Node*)malloc(sizeof(Node));
-    Node *tmp;
-    if(head == NULL) insertAtHead(v);
-    else{
-        tmp = head;
-        while(tmp->next != NULL){
-            tmp = tmp->next;
-        }
-        current->data = v;
-        tmp->next = current;
-        current->prev = tmp;
-        current->next = NULL;
-    }
-};
-
-void insertNth(Node *node, int v){
-    Node *current = (Node*)malloc(sizeof(Node));
-    current->data = v;
-    current->next = node->next;
-    current->prev = node;
-    node->next = current;
-    node->next->prev = current;
+    return newNode;
 }
 
-Node *search(int v){
-    Node *current = head;
+void push_back(ListNode **head, int v){
+    ListNode *newNode = createNode(v);
+    if(!newNode) return;
+
+    if(*head == NULL){
+        *head = newNode;
+        return;
+    }
+    
+    ListNode *current = *head;
+    while(current->next != NULL) current = current->next;
+    newNode->prev = current;
+    current->next = newNode;
+}
+
+void push_front(ListNode **head, int v){
+    ListNode *newNode = createNode(v);
+    if(!newNode) return;
+    newNode->next = *head;
+    if(*head != NULL) (*head)->prev = newNode;
+    *head = newNode;
+}
+
+void insertNth(ListNode **head, int pos, int v){
+    ListNode *newNode = createNode(v);
+    if(!newNode) return;
+
+    if(pos <= 0 || *head == NULL){
+        newNode->next = *head;
+        if(*head != NULL) (*head)->prev = newNode;
+        *head = newNode;
+        return;
+    }
+
+    ListNode *current = *head;
+    for(int i = 0; i < pos - 1 && current->next != NULL; i++){
+        current = current->next;
+    }
+
+    newNode->next = current->next;
+    if(current->next != NULL) current->next->prev = newNode;
+    newNode->prev = current;  
+    current->next = newNode;
+}
+
+ListNode *search(ListNode **head, int v){
+    ListNode *current = *head;
     while(current != NULL){
         if(current->data == v) return current;
         current = current->next;
     }
+
     return NULL;
 }
 
-void modify(Node *node, int v){
+bool modify(ListNode *node, int v){
+    if(!node) return false;
     node->data = v;
+    return true;
 }
 
-void delete(int v){
-    Node *current = head;
-    // Node *tmp;
-    while(current->next != NULL){
-        if(current->next->data == v){
-            // tmp = current->next;
-            // current->next = tmp->next->next;
-            // tmp->next->prev = current;
-            // free(tmp);
-            current->next = current->next->next;
-            current->next->next->prev = current;   
-        }
-        current = current->next;
+void deleteNode(ListNode **head, int v){;
+    ListNode *current = *head;
+    ListNode *prev = NULL, *next = NULL, *tmp = NULL;
+    while(current != NULL){
+        if(current->data == v){
+            tmp = current;
+            if(prev == NULL){
+                current = current->next;
+                *head = current;
+                if(*head != NULL) (*head)->prev = NULL;
+            }else{
+                next = current->next;
+                prev->next = next;
+                if(next != NULL) next->prev = prev;
+                current = next;
+            }
+            free(tmp);
+            tmp = NULL;
+        } else{
+            prev = current;
+            current = current->next;
+        }      
     }
 }
 
-void sort(){
+void sort(ListNode **head){
     int tmp;
-    for(Node *i = head; i->next != NULL; i = i->next){
-        for(Node *j = head; j->next != NULL; j = j->next){
+    for(ListNode *i = *head; i != NULL; i = i->next){
+        for(ListNode *j = *head; j != NULL; j = j->next){
             if(i->data > j->data){
                 tmp = i->data;
                 i->data = j->data;
@@ -138,25 +131,24 @@ void sort(){
     }
 }
 
-void reverse(){
-    Node *current, *prev, *next;
-    current = head;
-    prev = NULL;
-    while(current != NULL){
-        next = current->next;
-        current->next = prev;
-        prev = current;
-        current = next;
+void reverse(ListNode **head){
+    ListNode *current = *head;
+    ListNode *tmp = NULL;
+
+    while (current != NULL) {
+        tmp = current->prev;
+        current->prev = current->next;
+        current->next = tmp;
+        current = current->prev;
     }
-    head = prev;
+
+    if(tmp != NULL) *head = tmp->prev;
 }
 
-void show(){
-    Node *current = head;
-    printf("The list: head=");
+void show(ListNode **head){
+    ListNode *current = *head;
     while(current != NULL){
-        printf("%d=", current->data);
+        printf("%d ", current->data);
         current = current->next;
     }
-    printf("tail\n");
 }
