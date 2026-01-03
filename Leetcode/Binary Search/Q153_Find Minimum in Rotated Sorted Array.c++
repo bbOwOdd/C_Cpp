@@ -10,5 +10,8 @@ public:
             else right = middle;
         }
         return nums[left];
+
+        //sort(nums.begin(), nums.end());
+        //return nums[0];
     }
 };
