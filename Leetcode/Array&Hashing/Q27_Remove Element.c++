@@ -2,8 +2,8 @@ class Solution {
 public:
     int removeElement(vector<int>& nums, int val) {
         int k = 0;
-        for (int x : nums) {
-            if (x != val) nums[k++] = x;
+        for (int n : nums) {
+            if (n != val) nums[k++] = n;
         }
         return k;
     }
