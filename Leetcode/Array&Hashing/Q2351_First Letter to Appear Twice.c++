@@ -4,7 +4,7 @@ public:
     {
         for (int i = 1; i < s.size(); i++){
             for (int j = i - 1; j >= 0; j--){
-                if(s [i] == s [j]) return s[i];
+                if(s[i] == s[j]) return s[i];
             } 
         }
         return 'n';
