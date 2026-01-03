@@ -1,15 +1,15 @@
 class Solution {
 public:
     bool isHappy(int n) {
-        unordered_set<int> vis;
-        while (n != 1 && !vis.count(n)) {
-            vis.insert(n);
-            int x = 0;
+        unordered_set<int> s;
+        while (n != 1 && !s.count(n)) {
+            s.insert(n);
+            int tmp = 0;
             while(n) {
-                x += (n % 10) * (n % 10);
+                tmp += (n % 10) * (n % 10);
                 n /= 10;
             }
-            n = x;
+            n = tmp;
         }
         return n == 1;
     }
