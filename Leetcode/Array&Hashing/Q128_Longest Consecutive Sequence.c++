@@ -7,8 +7,8 @@ public:
 
         for(int n : nums){
             int y = n;
-            while(s.find(y) != s.end()) s.erase(y++);
-            map[n] = (map.find(y) != map.end() ? map[y] : 0) + y - n;
+            while(s.contains(y)) s.erase(y++);
+            map[n] = (map.contains(y) ? map[y] : 0) + y - n;
             ans = max(ans, map[n]);
         }
 
