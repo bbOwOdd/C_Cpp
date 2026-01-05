@@ -36,7 +36,7 @@ public:
     }
     
     int get(int key) {
-        if(!(cache.find(key) != cache.end())) return -1;
+        if(!cache.contains(key)) return -1;
         ListNode* current = cache[key];
         removeNode(current);
         addToHead(current);
@@ -44,7 +44,7 @@ public:
     }
     
     void put(int key, int value) {
-        if(cache.find(key) != cache.end()){
+        if(cache.contains(key)){
             ListNode* current = cache[key];
             removeNode(current);
             current->val = value;
