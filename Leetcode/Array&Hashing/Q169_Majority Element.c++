@@ -1,14 +1,10 @@
 class Solution {
 public:
     int majorityElement(vector<int>& nums) {
-        int cnt = 0, m = 0;
-        for (int n : nums) {
-            if (cnt == 0) {
-                m = n;
-                cnt = 1;
-            } 
-            else cnt += m == n ? 1 : -1;
-        }
-        return m;
+        priority_queue<pair<int, int>> pq;
+        unordered_map<int, int> mp;
+        for(int n : nums) mp[n]++;
+        for(auto& [n, c] : mp) pq.push({c, n});
+        return pq.top().second;
     }
 };
