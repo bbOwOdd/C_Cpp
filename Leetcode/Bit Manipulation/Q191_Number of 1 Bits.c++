@@ -4,7 +4,7 @@ public:
         int ans = 0;
         while (n) {
             n &= n - 1;
-            ++ans;
+            ans++;
         }
         return ans;
     }
