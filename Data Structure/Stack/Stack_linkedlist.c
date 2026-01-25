@@ -32,7 +32,7 @@ bool isEmpty(Stack* st){
     return (st->top == NULL);
 }
 
-int stackTop()(Stack* st){
+int stackTop(Stack* st){
     if(isEmpty(st)){
         printf("The stack is empty.\n");
         return -1;
