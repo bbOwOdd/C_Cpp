@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include <stdlib.h>
 
 typedef struct ListNode{
     int data;
@@ -11,7 +12,7 @@ void push_back(ListNode **head, int v);
 void push_front(ListNode **head, int v);
 void insertNth(ListNode **head, int pos, int v);
 ListNode *search(ListNode **head, int v);
-void modify(ListNode *head, int v);
+bool modify(ListNode *head, int v);
 void deleteNode(ListNode **head, int v);
 void sort(ListNode **head);
 void reverse(ListNode **head);
