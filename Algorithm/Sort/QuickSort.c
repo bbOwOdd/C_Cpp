@@ -30,7 +30,7 @@ void swap(int *a, int *b){
 int partition(int low, int high){
     int pivot = arr[high];  //choose the pivot from high index
     int i = low - 1;
-    for(int j = low; j <= high; j++){
+    for(int j = low; j < high; j++){
         if(arr[j] < pivot){  //current element of index < pivot
             i++;
             swap(&arr[i], &arr[j]);
@@ -68,4 +68,5 @@ void show(){
         printf("%d ", arr[i]);
     }
     printf("\n");
+
 }
