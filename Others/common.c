@@ -42,9 +42,9 @@ int main(){
 
     enum GPIO_NUM g2 = GPIO_IO1;
     
-    printf("%s, %d, %d, %p\n", g.name, g.direction, g.val, g.ptr);
-    printf("%d\n", d.c);
-    printf("%d\n", GPIO_IO1);
+    printf("%s, %d, %d, %p\n", g.name, g.direction, g.val, g.ptr); // test, 0, 10, NULL
+    printf("%d\n", d.c); // 255
+    printf("%d\n", GPIO_IO1); // 0
 
     return 0;
 }
