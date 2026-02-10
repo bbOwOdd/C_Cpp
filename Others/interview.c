@@ -27,7 +27,7 @@ bool powerOf2(int n){
 }
 
 // power of 4
-bool isPowerOfFour(int n){
+bool powerOf4(int n){
     return n > 0 && (n & (n - 1)) == 0 && (n & 0xAAAAAAAA) == 0;
 }
 
@@ -45,12 +45,12 @@ void printMSBLSB(uint32_t n){
 
 // number of 1 bits
 int hammingWeight(int n){
-    int ans = 0;
+    int count = 0;
     while(n){
         n &= (n - 1);
-        ans++;
+        count++;
     }
-    return ans;
+    return count;
 }
 
 // given 2 integers & print the distance of 1 bit
@@ -209,8 +209,8 @@ void updateMem(unsigned int addrA, unsigned int addrB){
 // check little endian or big endian
 void checkLittleOrBig(unsigned int n){
     char *c = (char*)&n;
-    if(*c == n) puts("little endian");
-    else puts("big endian");
+    if(*c == n) printf("little endian");
+    else printf("big endian");
 }
 
 // check hex is equal
@@ -239,6 +239,7 @@ int fib(int n){
 
 // swap number
 void swapNum(int* a, int* b){
+    if(*a == *b) return;
     *a ^= *b;
     *b ^= *a;
     *a ^= *b;
@@ -249,9 +250,8 @@ void swapNum(int* a, int* b){
 }
 
 // binary search
-int search(int* arr, int target){
-    int len = sizeof(arr) / sizeof(arr[0]);
-    int left = 0, right = len - 1;
+int binarySearch(int* arr, int size, int target){
+    int left = 0, right = size - 1;
     int mid = (left + right) >> 1;
 
     while(left <= right){
@@ -287,8 +287,8 @@ ret_val findMaxMin(int a, int b, int c){
         }
     }
     
-    ret.max = arr[0];
-    ret.min = arr[2];
+    ret.min = arr[0];
+    ret.max = arr[2];
     return ret;
 }
 
@@ -338,6 +338,39 @@ void print9x9Table(){
     for (int i = 1; i <= 9; i++) {
         for (int j = 1; j <= 9; j++) {
             printf("%d x %d = %2d  ", i, j, i * j);
+        }
+        printf("\n");
+    }
+}
+
+// print Xmas tree
+void printXmasTree(int n){
+    for(int i = 0; i < n; i++){
+        for(int j = n - 1; j > i; j--){
+            printf(" ");
+        }
+        for(int k = 0; k <= 2 * i; k++){
+            printf("*");
+        }
+        printf("\n");
+    }
+
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < n - 2; j++){
+            printf(" ");
+        }
+        printf("***\n");
+    }
+}
+
+// print pascal triangle
+void printPascalTri(int n){
+    for(int i = 1; i <= n; i++) {
+        for(int j = 1; j <= n - i; j++) printf("  ");
+        int x = 1;
+        for(int j = 1; j <= i; j++) {
+            printf("%d   ", x);
+            x = x * (i - j) / j;
         }
         printf("\n");
     }
