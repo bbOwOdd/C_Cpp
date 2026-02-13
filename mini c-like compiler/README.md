@@ -1,5 +1,5 @@
 ## Mini C-like Compiler in C
-This is a small and simple expression language interpreter implemented in C
+This is a small and simple c-like compiler developed in C
 - Text break down in lexer
 - Recursive descent parser for language analysis
 - AST using fixed-size node pool (no malloc)
