@@ -13,5 +13,5 @@ This is a small and simple expression language interpreter implemented in C
 - All memory structures are fixed size
 
 ## Build & Run
-make <\br>
+make
 ./execute
