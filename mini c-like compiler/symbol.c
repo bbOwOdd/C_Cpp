@@ -12,8 +12,7 @@ void sym_init(void) {
 
 int sym_set(char name, int32_t value) {
     int idx = name - 'a';
-    if (idx < 0 || idx >= MAX_SYMBOLS)
-        return -1;
+    if (idx < 0 || idx >= MAX_SYMBOLS) return -1;
     table[idx] = value;
     used[idx] = 1;
     return 0;
@@ -21,8 +20,7 @@ int sym_set(char name, int32_t value) {
 
 int sym_get(char name, int32_t *out) {
     int idx = name - 'a';
-    if (idx < 0 || idx >= MAX_SYMBOLS || !used[idx])
-        return -1;
+    if (idx < 0 || idx >= MAX_SYMBOLS || !used[idx]) return -1;
     *out = table[idx];
     return 0;
 }
