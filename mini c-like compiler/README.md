@@ -1,6 +1,4 @@
 ## Mini C-like Compiler in C
-
-## Overview
 This is a small and simple expression language interpreter implemented in C
 - Text break down in lexer
 - Recursive descent parser for language analysis
